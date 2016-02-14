@@ -1,0 +1,7 @@
+browse_metadata         Browse the metadata related to a series.
+get_data_structure      Get the data structure of a dataset.
+get_dataset             Download OECD data sets.
+get_datasets            Get a data frame with information on all
+                        available datasets.
+search_dataset          Search codes and descriptions of available OECD
+                        series
