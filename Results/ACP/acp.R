@@ -102,25 +102,45 @@ colnames(PISAS12) <- c("CTR", "Spendings on education, B USD", "Teaching time, h
 
 ## Principal Components Analysis ##
 
-log.mathsfact <- log(PISAM12[, 2:6])
-maths.scores <- PISAM12[, 7]
+# Distinguish quantitative from qualitative factors #
+quant = PISAM12[,2:7]
+qual = PISAM12[,1]
+pairs(quant)
 
-mathsfact.pca <- prcomp(log.mathsfact,
-                 center = TRUE,
-                 scale. = TRUE) 
+# Run PCA, get summary #
+acp = princomp(quant, cor = T, scores = T)
+summary(acp)
+	# Importance of components:
+	#                           Comp.1    Comp.2    Comp.3     Comp.4
+	# Standard deviation     1.4926975 1.4166800 0.9005918 0.76227419
+	# Proportion of Variance 0.3713577 0.3344970 0.1351776 0.09684366
+	# Cumulative Proportion  0.3713577 0.7058547 0.8410323 0.93787596
+	#                            Comp.5     Comp.6
+	# Standard deviation     0.49084269 0.36306706
+	# Proportion of Variance 0.04015442 0.02196962
+	# Cumulative Proportion  0.97803038 1.00000000
 
-print(mathsfact.pca)
-summary(mathsfact.pca)
+	# Here we'll decide to keep only the four first principal components (which represent 93.8% of the data)
 
-log.scifact <- log(PISAS12[, 2:6])
-scifact.scores <- PISAS12[, 7]
+# Compute the eigenvalues, plot them #
 
-scifact.pca <- prcomp(log.scifact,
-                 center = TRUE,
-                 scale. = TRUE) 
+valp = acp $ sdev^2
+dev.new()
+plot(valp, type = "b")
 
-print(scifact.pca)
-summary(scifact.pca)
+loadings = acp $ loadings
+print(loadings)
+	# Loadings:
+	#                                 Comp.1 Comp.2 Comp.3 Comp.4 Comp.5 Comp.6
+	# Spendings on education, B USD          -0.510  0.496  0.645  0.257       
+	# Teaching time, h                -0.187 -0.605 -0.289        -0.675  0.237
+	# Teachers salaries, USD           0.356 -0.410 -0.601 -0.127  0.559  0.123
+	# Student to teaching staff ratio -0.428 -0.321  0.419 -0.603  0.284  0.308
+	# Rate of tertiary diplomas        0.525 -0.282  0.258 -0.446 -0.241 -0.567
+	# PISA Maths Value                 0.609  0.151  0.258        -0.167  0.714
+
+# print(scifact.pca)
+# summary(scifact.pca)
 
 # Ploting the resulting principal vectors graph #
 
@@ -131,3 +151,15 @@ summary(scifact.pca)
 # g <- g + theme(legend.direction = 'horizontal', 
 #                legend.position = 'top')
 # print(g)
+
+#					 #
+## Multiple linear regression ##
+#					 #
+
+MultiRegMaths <- lm(PISAM12$"PISA Maths Value" ~ PISAM12$"Spendings on education, B USD" + PISAM12$"Teaching time, h" + PISAM12$"Teachers salaries, USD" + PISAM12$"Student to teaching staff ratio")
+summary(MultiRegMaths)
+
+MultiRegMaths2 <- lm(PISAM12$"PISA Maths Value" ~ PISAM12$"Teaching time, h" + PISAM12$"Student to teaching staff ratio")
+summary(MultiRegMaths2)
+
+anova(MultiRegMaths, MultiRegMaths2) 

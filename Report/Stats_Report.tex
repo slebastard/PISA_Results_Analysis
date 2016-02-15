@@ -159,54 +159,65 @@ setwd("D:/PISA_Results_Analysis/Data")
 Then we load the CSV files that we will use in the script. Note that PISA results were processed only for girl students. This is justified by the fact that standard deviation is lower for girl students than it is for boys students.
 \begin{lstlisting}
 ## LOADING AND FILTERING PISA MATHS DB ##
-PISAMFile <- "PISA_Maths.csv"
-PISAM <- read.csv(PISAMFile)
-colnames(PISAM) <- c("CTR", "INDICATOR", "SUBJECT", "MEASURE", "FREQUENCY", "TIME", "Value", "Flag.Codes")
-PISAMFilt <- sqldf("select CTR, Value from PISAM where SUBJECT=='GIRL' and TIME=='2012'")
-head(PISAMFilt)
+> PISAMFile <- "PISA_Maths.csv"
+> PISAM <- read.csv(PISAMFile)
+> colnames(PISAM) <- c("CTR", "INDICATOR", "SUBJECT", "MEASURE",
++ "FREQUENCY", "TIME", "Value", "Flag.Codes")
+> PISAMFilt <- sqldf("select CTR, Value from PISAM where
++ SUBJECT=='GIRL' and TIME=='2012'")
+> head(PISAMFilt)
 
 ## LOADING AND FILTERING PISA READING DB ##
-PISARFile <- "PISA_Reading.csv"
-PISAR <- read.csv(PISARFile)
-colnames(PISAR) <- c("CTR", "INDICATOR", "SUBJECT", "MEASURE", "FREQUENCY", "TIME", "Value", "Flag.Codes")
-PISARFilt <- sqldf("select CTR, Value from PISAR where SUBJECT=='GIRL' and TIME=='2012'")
-head(PISARFilt)
+> PISARFile <- "PISA_Reading.csv"
+> PISAR <- read.csv(PISARFile)
+> colnames(PISAR) <- c("CTR", "INDICATOR", "SUBJECT", "MEASURE",
++ "FREQUENCY", "TIME", "Value", "Flag.Codes")
+> PISARFilt <- sqldf("select CTR, Value from PISAR where
++ SUBJECT=='GIRL' and TIME=='2012'")
+> head(PISARFilt)
 
 ## LOADING CSV FILE ABOUT S/T RATIO ##
 
-STFile <- "Stud_Teach_Ratio.csv"
-ST <- read.csv(STFile)
-colnames(ST) <- c("CTR", "Country", "LVL", "Level of education", "SCT", "Reference sector", "IND", "Indicator", "YEA", "Year", "UNT", "Unit", "PWC", "PowerCode", "PER", "Reference Period", "Value", "FLG", "Flags")
+> STFile <- "Stud_Teach_Ratio.csv"
+> ST <- read.csv(STFile)
+> colnames(ST) <- c("CTR", "Country", "LVL", "Level of education", "SCT",
++ "Reference sector", "IND", "Indicator", "YEA", "Year", "UNT", "Unit",
++ "PWC", "PowerCode", "PER", "Reference Period", "Value", "FLG", "Flags")
 \end{lstlisting}
 Then a mere SQL request is enough to select only the interesting variables among those in the file.
 \begin{lstlisting}
-STRatio <- sqldf("select CTR, Value from ST where IND=='PERS_RATIO_INST' and SCT=='INST_T' and LVL=='L2_3'")
+> STRatio <- sqldf("select CTR, Value from ST where IND=='PERS_RATIO_INST'
++ and SCT=='INST_T' and LVL=='L2_3'")
 \end{lstlisting}
 The constructed dataset is then merged with the PISA dataset so that its influence on the results at PISA can be studied.
 \begin{lstlisting}
-STM <- merge(STRatio,PISAMFilt,by = "CTR")			# 37 entries
-STM <- na.omit(STM)							# 32 entries
-colnames(STM) <- c("CTR", "S/T ratio", "PISA Maths Score")
+> STM <- merge(STRatio,PISAMFilt,by = "CTR")			# 37 entries
+> STM <- na.omit(STM)							# 32 entries
+> colnames(STM) <- c("CTR", "S/T ratio", "PISA Maths Score")
 
-STR <- merge(STRatio,PISASFilt,by = "CTR")			# 37 entries
-STR <- na.omit(STR)							# 32 entries
-colnames(STR) <- c("CTR", "S/T ratio", "PISA Reading Score")
+> STR <- merge(STRatio,PISASFilt,by = "CTR")			# 37 entries
+> STR <- na.omit(STR)							# 32 entries
+> colnames(STR) <- c("CTR", "S/T ratio", "PISA Reading Score")
 \end{lstlisting}
 The next step often is to discretize the distribution that we have. Let us remind the reader that we would like to test the dependence of the S/T ratio on results at PISA, both in mathematics and at reading. To assess dependence the exact Test of Fisher was used. A piece of justification would be that the datasets are too small for the $\Xi$-squared approximation to be true in this situation. Fisher tests are often used in situations with a small number of entries, which is the case here.
 To do this the authors used the "entropy" library. One of the major drawbacks of this method is that the results of the Fisher tests depend on the binning, that is the level at which our datasets are discretized.
 In this study two binning numbers were used for each academic factor studied. Each time the authors tried to take a number of bins as high as possible, to get a good discrete representation of the datasets.
 \begin{lstlisting}
-Discrete_ST_M8 <- discretize2d(STM$"S/T ratio", STM$"PISA Maths Score", numBins1=8, numBins2=8)
-Discrete_ST_M12 <- discretize2d(STM$"S/T ratio", STM$"PISA Maths Score", numBins1=12, numBins2=12)
-Discrete_ST_R8 <- discretize2d(STS$"S/T ratio", STS$"PISA Sciences Score", numBins1=8, numBins2=8)
-Discrete_ST_R12 <- discretize2d(STS$"S/T ratio", STS$"PISA Sciences Score", numBins1=12, numBins2=12)
+> Discrete_ST_M8 <- discretize2d(STM$"S/T ratio", STM$"PISA Maths Score",
++ numBins1=8, numBins2=8)
+> Discrete_ST_M12 <- discretize2d(STM$"S/T ratio", STM$"PISA Maths Score",
++ numBins1=12, numBins2=12)
+> Discrete_ST_R8 <- discretize2d(STS$"S/T ratio", STS$"PISA Sciences Score",
++ numBins1=8, numBins2=8)
+> Discrete_ST_R12 <- discretize2d(STS$"S/T ratio", STS$"PISA Sciences Score",
++ numBins1=12, numBins2=12)
 
-STFisherM8 <- fisher.test(Discrete_ST_M8)
+> STFisherM8 <- fisher.test(Discrete_ST_M8)
 	# Fisher's Exact Test for Count Data
 	# data:  Discrete_ST_M8
 	# p-value = 0.09221
 	# alternative hypothesis: two.sided
-STFisherS8 <- fisher.test(Discrete_ST_S8)
+> STFisherS8 <- fisher.test(Discrete_ST_S8)
 	# Fisher's Exact Test for Count Data
 	# data:  Discrete_ST_R8
 	# p-value = 0.1772
@@ -215,10 +226,10 @@ STFisherS8 <- fisher.test(Discrete_ST_S8)
 At last here is the plot of PISA results as a function of $\frac{N_{students}}{N_{teachers}}$
 \begin{lstlisting}	
 # Plot of PISAMaths = f(S/T) #
-plot(STM$"S/T ratio", STM$"PISA Maths Score")
+> plot(STM$"S/T ratio", STM$"PISA Maths Score")
 
 # Plot of PISAReading = f(S/T) #
-plot(STR$"S/T ratio", STR$"PISA Reading Score")
+> plot(STR$"S/T ratio", STR$"PISA Reading Score")
 \end{lstlisting}
 
 \begin{figure}
@@ -232,6 +243,7 @@ plot(STR$"S/T ratio", STR$"PISA Reading Score")
 The study is divided in two parts:
 \begin{enumerate}
 	\item The study of the dependence of each academic factor to PISA results, both in mathematics and in reading. As presented just before and because of the small number of entries in the data frames, the exact Fisher Test was used. Therefore the scripts for different academic factors are very similar, which is why only one of the scripts is presented in this paper.
+	\item A principal component analysis that aims at explaining the results at PISA in mathematics and reading, in order to know what factor significantly influences the results relatively to one another
 \end{enumerate}
 
 \end{document}
