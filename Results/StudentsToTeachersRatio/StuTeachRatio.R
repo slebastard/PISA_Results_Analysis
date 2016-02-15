@@ -2,7 +2,7 @@
 library(MASS)
 library(sqldf)
 library(entropy)
-setwd("D:/Ponts/2A/S4/Statistiques/Projet/Data")
+setwd("D:/PISA_Results_Analysis/Data")
 
 ## LOADING AND FILTERING PISA MATHS DB ##
 PISAMFile <- "PISA_Maths.csv"

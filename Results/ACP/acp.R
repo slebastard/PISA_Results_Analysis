@@ -2,6 +2,10 @@
 library(MASS)
 library(sqldf)
 library(entropy)
+library(devtools)
+install_github("ggbiplot", "vqv") 
+library(ggbiplot)
+
 setwd("D:/Ponts/2A/S4/Statistiques/Projet/Data")
 
 ## LOADING AND FILTERING PISA MATHS DB ##
@@ -43,6 +47,25 @@ colnames(Slr) <- c("CTR", "INDICATOR", "SUBJECT", "MEASURE", "FREQUENCY", "TIME"
 
 Slr2012 <- sqldf("select CTR, Value from Slr where MEASURE=='USD' and TIME=='2012'")
 
+## LOADING TEACHING HOURS FILES ##
+
+HoursFile <- "Teaching_Hours.csv"
+HoursUnfilt <- read.csv(HoursFile)
+colnames(HoursUnfilt) <- c("CTR", "INDICATOR", "SUBJECT", "MEASURE", "FREQUENCY", "TIME", "Value", "Flag Codes")
+
+HoursLow <- sqldf("select CTR, Value from HoursUnfilt where SUBJECT=='LOWSRY' and TIME=='2012'")
+HoursUp <- sqldf("select CTR, Value from HoursUnfilt where SUBJECT=='UPPSRY' and TIME=='2012'")
+
+## SPENDINGS ON EDUCATION ##
+
+SpendFile <- "Spendings_GDP.csv"
+Spend <- read.csv(SpendFile)
+colnames(Spend) <- c("CTR", "INDICATOR", "SUBJECT", "MEASURE", "FREQUENCY", "TIME", "Value", "Flag Codes")
+
+Spendings1_2 <- sqldf("select CTR, Value from Spend where SUBJECT=='PRY_NTRY'")
+Spendings3 <- sqldf("select CTR, Value from Spend where SUBJECT=='TRY'")
+
+
 #					#
 ###### COMPLETE DATATABLE #####
 #					#
@@ -52,9 +75,15 @@ tmp1 <- na.omit(tmp1)								# 36 entries
 tmp2 <- merge(STRatio,tmp1,by = "CTR")
 tmp2 <- na.omit(tmp2)								# 30 entries
 colnames(tmp2) <- c("CTR", "tmp 2", "tmp 1", "PISA Maths Value")
-tmp3 <- merge(Slr2012,tmp2,by = "CTR")	
-2012PISAM <- na.omit(tmp3)							# 26 entries
-colnames(2012PISAM) <- c("CTR", "Teachers salaries, USD", "Student to teaching staff ratio", "Rate of tertiary diplomas","PISA Maths Value")
+tmp3 <- merge(Slr2012,tmp2,by = "CTR")
+tmp3 <- na.omit(tmp3)
+colnames(tmp3) <- c("CTR", "tmp3", "tmp 2", "tmp 1", "PISA Maths Value")
+tmp4 <- merge(HoursUp,tmp3,by = "CTR")
+tmp4 <- na.omit(tmp4)
+colnames(tmp4) <- c("CTR", "tmp4", "tmp3", "tmp 2", "tmp 1", "PISA Maths Value")
+tmp5 <- merge(Spendings1_2,tmp4,by = "CTR")
+PISAM12 <- na.omit(tmp5)							# 26 entries
+colnames(PISAM12) <- c("CTR", "Spendings on education, B USD", "Teaching time, h", "Teachers salaries, USD", "Student to teaching staff ratio", "Rate of tertiary diplomas","PISA Maths Value")			# 22 entries
 
 tmp1 <- merge(Diplo2012,PISASFilt,by = "CTR")
 tmp1 <- na.omit(tmp1)								# 36 entries
@@ -62,5 +91,43 @@ tmp2 <- merge(STRatio,tmp1,by = "CTR")
 tmp2 <- na.omit(tmp2)								# 30 entries
 colnames(tmp2) <- c("CTR", "tmp 2", "tmp 1", "PISA Sciences Value")
 tmp3 <- merge(Slr2012,tmp2,by = "CTR")	
-2012PISAS <- na.omit(tmp3)							# 26 entries
-colnames(2012PISAM) <- c("CTR", "Teachers salaries, USD", "Student to teaching staff ratio", "Rate of tertiary diplomas","PISA Sciences Value")
+tmp3 <- na.omit(tmp3)
+colnames(tmp3) <- c("CTR", "tmp3", "tmp 2", "tmp 1", "PISA Sciences Value")
+tmp4 <- merge(HoursUp,tmp3,by = "CTR")
+tmp4 <- na.omit(tmp4)
+colnames(tmp4) <- c("CTR", "tmp4", "tmp3", "tmp 2", "tmp 1", "PISA Sciences Value")
+tmp5 <- merge(Spendings1_2,tmp4,by = "CTR")
+PISAS12 <- na.omit(tmp5)							# 26 entries
+colnames(PISAS12) <- c("CTR", "Spendings on education, B USD", "Teaching time, h", "Teachers salaries, USD", "Student to teaching staff ratio", "Rate of tertiary diplomas","PISA Sciences Value")			# 22 entries
+
+## Principal Components Analysis ##
+
+log.mathsfact <- log(PISAM12[, 2:6])
+maths.scores <- PISAM12[, 7]
+
+mathsfact.pca <- prcomp(log.mathsfact,
+                 center = TRUE,
+                 scale. = TRUE) 
+
+print(mathsfact.pca)
+summary(mathsfact.pca)
+
+log.scifact <- log(PISAS12[, 2:6])
+scifact.scores <- PISAS12[, 7]
+
+scifact.pca <- prcomp(log.scifact,
+                 center = TRUE,
+                 scale. = TRUE) 
+
+print(scifact.pca)
+summary(scifact.pca)
+
+# Ploting the resulting principal vectors graph #
+
+# g <- ggbiplot(mathsfact.pca, obs.scale = 1, var.scale = 1, 
+#              groups = ir.species, ellipse = TRUE, 
+#              circle = TRUE)
+# g <- g + scale_color_discrete(name = '')
+# g <- g + theme(legend.direction = 'horizontal', 
+#                legend.position = 'top')
+# print(g)
