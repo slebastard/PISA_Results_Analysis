@@ -67,3 +67,4 @@ plot(STM$"S/T ratio", STM$"PISA Maths Score")
 
 # Plot of PISAScience = f(S/T) #
 plot(STS$"S/T ratio", STS$"PISA Sciences Score")
+
