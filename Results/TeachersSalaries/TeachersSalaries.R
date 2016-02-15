@@ -2,7 +2,7 @@
 library(MASS)
 library(sqldf)
 library(entropy)
-setwd("D:/Ponts/2A/S4/Statistiques/Projet/Data")
+setwd("D:/PISA_Results_Analysis/Data")
 
 ## LOADING AND FILTERING PISA MATHS DB ##
 PISAMFile <- "PISA_Maths.csv"
@@ -64,3 +64,4 @@ SlrDependencyM10 <- (Slr_miM10)/(Slr_entrM10)
 Slr_miS10 <- mi.plugin(Discrete_Slr_S10)
 Slr_entrS10 <- entropy(Discrete_Slr_S10)
 SlrDependencyS10 <- (Slr_miS10)/(Slr_entrS10)
+
