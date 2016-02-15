@@ -4,7 +4,7 @@
 \usepackage[english]{babel}
 \usepackage{csquotes} 
 \usepackage[]{mcode}
-\usepackage[left=0.3cm,right=0.7cm,top=1.6cm,bottom=1.6cm]{geometry}
+\usepackage[left=1cm,right=1cm,top=2cm,bottom=1.6cm]{geometry}
 \geometry{bindingoffset=1.5cm}
 \usepackage{graphicx}
 \usepackage[section]{placeins}
@@ -69,16 +69,169 @@ This is a key factor, as teaching salaries settle the attractiveness of the job,
 
 This study will try to see if there is a relation between the amount of time students spentd in time and their academic results. This is interesting namely because even among western european countries, class hours and academic calendars are very different. Here the only factor studied is the number of hours spent in class per week. Holidays are therefore not taken into account.
 
-\subsection{Measurements of effectiveness}
+\subsubsection{Educational expenditure, as a part of GDP}
 
-Relate PISA to third grade enrollment and diplomas rate
+It felt important to us to check the importance of the financial means given to the educational system. Is having a higher budget really important for the performances of the students? Or is there some other, more important criteria? It thus felt natural to check the extent of the budget effect. 
 
-\subsubsection{Link to work}
+\subsubsection{Number of teaching hours}
 
+For us, it felt natural that teaching hours and a good mark at the PISA were linked. Indeed, one can easily think that the more class hour you have, the easier it is to understand and to have a fine mastership of the subject. We thus not only wanted to check if there was or not a dependency which truly existed, but also to know how important the link between those data was.
 
+\subsection{Testing the influence of the academic factors on results at PISA tests}
+
+The PISA (« Program for International Student Assessment ») is a worldwide study by the OECD. It evaluates the performances of students through an exam. This exam is common for every country taking part in it. The authors used it as reference in their study, as it is the only test that can be used to compare the students of different countries. However they understand that it is a flawed test, and that the results may be attacked on that point. Indeed, how could good results prove the skills and knowledge of the students? Even if we could measure it, should skills and knowledge learned be the key to evaluate an educative system? Is the skills and the « savoir-faire » all that matters? All those questions won’t be tackled in this report, and we will use the PISA as it is our only common indicator for education in the whole OECD. It is the only way to compare the different countries and students.
+\\
+However, before checking how important the other criteria are, it is important to check the validity of the PISA as our comparison main criteria.
+
+To do so, the authors tried to check whether the results of the PISA and the part of the people with a diploma was in anyway linked. Indeed, it is interesting to check if a goof score at the PISA tests allow a country to have more graduates or not.
+
+\subsubsection{Details}
+
+The data files were found at \url{https://data.oecd.org/} and downloaded as CSV files.
+Statistical analysis was performed on R. Files were shared with the following Git repository:
+\url{https://github.com/slebastard/PISA\_Results\_Analysis}
+Note that a few libraries needed for this study were not originally given with the R distribution for Windows, v3.2.3. Those libraries can be found in the "RTools" folder of the repository.
 
 \section{Dependency of PISA results in different fields}
 
+Before testing the influence of various academic factors on the results at PISA, the authors enquired about the possible dependency of the results in different fields.
 
+The following R file contains the code for a Kolmogorov-Smirnov test on PISA results in maths, in sciences (including physics, chemistry, geology and biology) and in litterature (written test to assess reading and understanding skills):
+
+\begin{lstlisting}
+setwd(#WORKING DIRECTORY#)
+library(MASS)
+
+PISAM12 <- read.csv("PISA_Maths_2012.csv")
+PISAR12 <- read.csv("PISA_Reading_2012.csv")
+PISAS12 <- read.csv("PISA_Sciences_2012.csv")
+
+PISA_KS_SR <- ks.test(PISAS$Value,PISAR$Value)
+	# Two-sample Kolmogorov-Smirnov test
+	# D = 0.18859
+	# p-value = 9.042e-5
+PISA_KS_MR <- ks.test(PISAM$Value,PISAR$Value)
+	# Two-sample Kolmogorov-Smirnov test
+	# D = 0.12819
+	# p-value = 9.325e-3
+PISA_KS_MS <- ks.test(PISAM$Value,PISAS$Value)
+	# Two-sample Kolmogorov-Smirnov test
+	# D = 0.085964
+	# p-value = 0.2927
+	
+plot(PISAM$Value, xaxt=PISAM$LOCATION)
+
+plot(PISAS$Value, xaxt=PISAS$LOCATION)
+
+plot(PISAR$Value, xaxt=PISAR$LOCATION)
+\end{lstlisting}
+
+\# symbols in the script indicate commentaries that report the result of the Kolmogorov-Smirnov tests. The following conclusions can be drown:
+\begin{itemize}
+	\item PISA results at reading follow a different law from PISA results in maths and sciences
+	\item At every usual test levels, we find that \textbf{PISA results in mathematics and in sciences follow the same statistic law}.
+\end{itemize}
+
+\begin{figure}
+	\centering
+	\caption{The PISA results for different fields, as a function of the countries ID number}
+	\includegraphics[scale=0.4]{img/IntraDependencePISA.png}
+\end{figure}
+
+Therefore the results in PISA in maths and in sciences will be treated as one set of results in what follows. Reading results will be treated independently.
+
+\section{Methodology of analysis}
+
+\subsection{Exemple of script used for analysis}
+
+The following part details the generic script skeleton that the authors used to determine dependencies between academic factors and PISA results in mathematics and in reading.
+
+Let us consider the exemple of the script assessingthe influence of the $\frac{N_{students}}{N_{teachers}}$ ratio on the results at PISA.
+The first part is about loading the right R libraires for analysis:
+\begin{lstlisting}
+## LOADING LIBRARIES ##
+library(MASS)
+library(sqldf)
+library(entropy)
+setwd("D:/PISA_Results_Analysis/Data")
+\end{lstlisting}
+
+Then we load the CSV files that we will use in the script. Note that PISA results were processed only for girl students. This is justified by the fact that standard deviation is lower for girl students than it is for boys students.
+\begin{lstlisting}
+## LOADING AND FILTERING PISA MATHS DB ##
+PISAMFile <- "PISA_Maths.csv"
+PISAM <- read.csv(PISAMFile)
+colnames(PISAM) <- c("CTR", "INDICATOR", "SUBJECT", "MEASURE", "FREQUENCY", "TIME", "Value", "Flag.Codes")
+PISAMFilt <- sqldf("select CTR, Value from PISAM where SUBJECT=='GIRL' and TIME=='2012'")
+head(PISAMFilt)
+
+## LOADING AND FILTERING PISA READING DB ##
+PISARFile <- "PISA_Reading.csv"
+PISAR <- read.csv(PISARFile)
+colnames(PISAR) <- c("CTR", "INDICATOR", "SUBJECT", "MEASURE", "FREQUENCY", "TIME", "Value", "Flag.Codes")
+PISARFilt <- sqldf("select CTR, Value from PISAR where SUBJECT=='GIRL' and TIME=='2012'")
+head(PISARFilt)
+
+## LOADING CSV FILE ABOUT S/T RATIO ##
+
+STFile <- "Stud_Teach_Ratio.csv"
+ST <- read.csv(STFile)
+colnames(ST) <- c("CTR", "Country", "LVL", "Level of education", "SCT", "Reference sector", "IND", "Indicator", "YEA", "Year", "UNT", "Unit", "PWC", "PowerCode", "PER", "Reference Period", "Value", "FLG", "Flags")
+\end{lstlisting}
+Then a mere SQL request is enough to select only the interesting variables among those in the file.
+\begin{lstlisting}
+STRatio <- sqldf("select CTR, Value from ST where IND=='PERS_RATIO_INST' and SCT=='INST_T' and LVL=='L2_3'")
+\end{lstlisting}
+The constructed dataset is then merged with the PISA dataset so that its influence on the results at PISA can be studied.
+\begin{lstlisting}
+STM <- merge(STRatio,PISAMFilt,by = "CTR")			# 37 entries
+STM <- na.omit(STM)							# 32 entries
+colnames(STM) <- c("CTR", "S/T ratio", "PISA Maths Score")
+
+STR <- merge(STRatio,PISASFilt,by = "CTR")			# 37 entries
+STR <- na.omit(STR)							# 32 entries
+colnames(STR) <- c("CTR", "S/T ratio", "PISA Reading Score")
+\end{lstlisting}
+The next step often is to discretize the distribution that we have. Let us remind the reader that we would like to test the dependence of the S/T ratio on results at PISA, both in mathematics and at reading. To assess dependence the exact Test of Fisher was used. A piece of justification would be that the datasets are too small for the $\Xi$-squared approximation to be true in this situation. Fisher tests are often used in situations with a small number of entries, which is the case here.
+To do this the authors used the "entropy" library. One of the major drawbacks of this method is that the results of the Fisher tests depend on the binning, that is the level at which our datasets are discretized.
+In this study two binning numbers were used for each academic factor studied. Each time the authors tried to take a number of bins as high as possible, to get a good discrete representation of the datasets.
+\begin{lstlisting}
+Discrete_ST_M8 <- discretize2d(STM$"S/T ratio", STM$"PISA Maths Score", numBins1=8, numBins2=8)
+Discrete_ST_M12 <- discretize2d(STM$"S/T ratio", STM$"PISA Maths Score", numBins1=12, numBins2=12)
+Discrete_ST_R8 <- discretize2d(STS$"S/T ratio", STS$"PISA Sciences Score", numBins1=8, numBins2=8)
+Discrete_ST_R12 <- discretize2d(STS$"S/T ratio", STS$"PISA Sciences Score", numBins1=12, numBins2=12)
+
+STFisherM8 <- fisher.test(Discrete_ST_M8)
+	# Fisher's Exact Test for Count Data
+	# data:  Discrete_ST_M8
+	# p-value = 0.09221
+	# alternative hypothesis: two.sided
+STFisherS8 <- fisher.test(Discrete_ST_S8)
+	# Fisher's Exact Test for Count Data
+	# data:  Discrete_ST_R8
+	# p-value = 0.1772
+	# alternative hypothesis: two.sided
+\end{lstlisting}
+At last here is the plot of PISA results as a function of $\frac{N_{students}}{N_{teachers}}$
+\begin{lstlisting}	
+# Plot of PISAMaths = f(S/T) #
+plot(STM$"S/T ratio", STM$"PISA Maths Score")
+
+# Plot of PISAReading = f(S/T) #
+plot(STR$"S/T ratio", STR$"PISA Reading Score")
+\end{lstlisting}
+
+\begin{figure}
+	\centering
+	\caption{Influence of the student/Teacher ratio on the results at PISA}
+	\includegraphics[scale=0.4]{img/STRatio.png}
+\end{figure}
+
+\subsection{Strategy of analysis}
+
+The study is divided in two parts:
+\begin{enumerate}
+	\item The study of the dependence of each academic factor to PISA results, both in mathematics and in reading. As presented just before and because of the small number of entries in the data frames, the exact Fisher Test was used. Therefore the scripts for different academic factors are very similar, which is why only one of the scripts is presented in this paper.
+\end{enumerate}
 
 \end{document}

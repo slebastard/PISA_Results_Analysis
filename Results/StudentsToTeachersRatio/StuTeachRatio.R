@@ -12,11 +12,11 @@ PISAMFilt <- sqldf("select CTR, Value from PISAM where SUBJECT=='GIRL' and TIME=
 head(PISAMFilt)
 
 ## LOADING AND FILTERING PISA SCIENCES DB ##
-PISASFile <- "PISA_Sciences.csv"
-PISAS <- read.csv(PISASFile)
-colnames(PISAS) <- c("CTR", "INDICATOR", "SUBJECT", "MEASURE", "FREQUENCY", "TIME", "Value", "Flag.Codes")
-PISASFilt <- sqldf("select CTR, Value from PISAS where SUBJECT=='GIRL' and TIME=='2012'")
-head(PISASFilt)
+PISARFile <- "PISA_Reading.csv"
+PISAR <- read.csv(PISARFile)
+colnames(PISAR) <- c("CTR", "INDICATOR", "SUBJECT", "MEASURE", "FREQUENCY", "TIME", "Value", "Flag.Codes")
+PISARFilt <- sqldf("select CTR, Value from PISAR where SUBJECT=='GIRL' and TIME=='2012'")
+head(PISARFilt)
 
 ## LOADING CSV FILE ABOUT S/T RATIO ##
 
@@ -32,16 +32,16 @@ STM <- merge(STRatio,PISAMFilt,by = "CTR")			# 37 entries
 STM <- na.omit(STM)							# 32 entries
 colnames(STM) <- c("CTR", "S/T ratio", "PISA Maths Score")
 
-STS <- merge(STRatio,PISASFilt,by = "CTR")			# 37 entries
-STS <- na.omit(STS)							# 32 entries
-colnames(STS) <- c("CTR", "S/T ratio", "PISA Sciences Score")
+STR <- merge(STRatio,PISARFilt,by = "CTR")			# 37 entries
+STR <- na.omit(STR)							# 32 entries
+colnames(STR) <- c("CTR", "S/T ratio", "PISA Reading Score")
 
 # Discrete indicators and Fisher tests #
 
 Discrete_ST_M8 <- discretize2d(STM$"S/T ratio", STM$"PISA Maths Score", numBins1=8, numBins2=8)
 Discrete_ST_M12 <- discretize2d(STM$"S/T ratio", STM$"PISA Maths Score", numBins1=12, numBins2=12)
-Discrete_ST_S8 <- discretize2d(STS$"S/T ratio", STS$"PISA Sciences Score", numBins1=8, numBins2=8)
-Discrete_ST_S12 <- discretize2d(STS$"S/T ratio", STS$"PISA Sciences Score", numBins1=12, numBins2=12)
+Discrete_ST_R8 <- discretize2d(STR$"S/T ratio", STR$"PISA Reading Score", numBins1=8, numBins2=8)
+Discrete_ST_R12 <- discretize2d(STR$"S/T ratio", STR$"PISA Reading Score", numBins1=12, numBins2=12)
 
 STPISAM_miM8 <- mi.plugin(Discrete_ST_M8)
 STPISAM_entrM8 <- entropy(Discrete_ST_M8)
@@ -51,20 +51,28 @@ STPISAM_miM12 <- mi.plugin(Discrete_ST_M12)
 STPISAM_entrM12 <- entropy(Discrete_ST_M12)
 STDependencyM12 <- (STPISAM_miM12)/(STPISAM_entrM12)
 
-STPISAM_miS8 <- mi.plugin(Discrete_ST_S8)
-STPISAM_entrS8 <- entropy(Discrete_ST_S8)
-STDependencyS8 <- (STPISAM_miS8)/(STPISAM_entrS8)
+STPISAM_miR8 <- mi.plugin(Discrete_ST_R8)
+STPISAM_entrR8 <- entropy(Discrete_ST_R8)
+STDependencyR8 <- (STPISAM_miR8)/(STPISAM_entrR8)
 
-STPISAM_miS12 <- mi.plugin(Discrete_ST_S12)
-STPISAM_entrS12 <- entropy(Discrete_ST_S12)
-STDependencyS12 <- (STPISAM_miS12)/(STPISAM_entrS12)
+STPISAM_miR12 <- mi.plugin(Discrete_ST_R12)
+STPISAM_entrR12 <- entropy(Discrete_ST_R12)
+STDependencyR12 <- (STPISAM_miR12)/(STPISAM_entrR12)
 
 STFisherM8 <- fisher.test(Discrete_ST_M8)
-STFisherS8 <- fisher.test(Discrete_ST_S8)
+	# Fisher's Exact Test for Count Data
+	# data:  Discrete_ST_M8
+	# p-value = 0.09221
+	# alternative hypothesis: two.sided
+STFisherR8 <- fisher.test(Discrete_ST_R8)
+	# Fisher's Exact Test for Count Data
+	# data:  Discrete_ST_R8
+	# p-value = 0.1772
+	# alternative hypothesis: two.sided
 
 # Plot of PISAMaths = f(S/T) #
 plot(STM$"S/T ratio", STM$"PISA Maths Score")
 
-# Plot of PISAScience = f(S/T) #
-plot(STS$"S/T ratio", STS$"PISA Sciences Score")
+# Plot of PISARcience = f(S/T) #
+plot(STR$"S/T ratio", STR$"PISA Reading Score")
 
