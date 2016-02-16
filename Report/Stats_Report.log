@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9) (preloaded format=pdflatex 2015.4.17)  15 FEB 2016 21:18
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9) (preloaded format=pdflatex 2015.4.17)  16 FEB 2016 12:51
 entering extended mode
 **Stats_Report.tex
 (D:\Ponts\2A\S4\Statistiques\Projet\Report\Stats_Report.tex
@@ -816,7 +816,7 @@ File: t1pcr.fd 2001/06/04 font definitions for T1/pcr.
 LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <5> on input line 105.
  [3]
-<img/IntraDependencePISA.png, id=102, 407.5225pt x 1130.2225pt>
+<img/IntraDependencePISA.png, id=118, 407.5225pt x 1130.2225pt>
 File: img/IntraDependencePISA.png Graphic file (type png)
 
 <use img/IntraDependencePISA.png>
@@ -829,28 +829,42 @@ LaTeX Font Info:    Try loading font information for TS1+pcr on input line 167.
 ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\psnfss\ts1pcr.fd"
 File: ts1pcr.fd 2001/06/04 font definitions for TS1/pcr.
 ) [5]
-<img/STRatio.png, id=160, 393.47pt x 805.0075pt>
+<img/STRatio.png, id=176, 393.47pt x 805.0075pt>
 File: img/STRatio.png Graphic file (type png)
  <use img/STRatio.png>
-Package pdftex.def Info: img/STRatio.png used on input line 238.
+Package pdftex.def Info: img/STRatio.png used on input line 239.
 (pdftex.def)             Requested size: 157.38521pt x 321.9973pt.
  [6]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 249.
-
 [7 <D:/Ponts/2A/S4/Statistiques/Projet/Report/img/STRatio.png>]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 249.
+<img/3DRate.png, id=225, 397.485pt x 807.015pt>
+File: img/3DRate.png Graphic file (type png)
+ <use img/3DRate.png>
+Package pdftex.def Info: img/3DRate.png used on input line 283.
+(pdftex.def)             Requested size: 158.99118pt x 322.80028pt.
+ [8]
+[9 <D:/Ponts/2A/S4/Statistiques/Projet/Report/img/3DRate.png>]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 290.
+ [10]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 290.
 
 (D:\Ponts\2A\S4\Statistiques\Projet\Report\Stats_Report.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 249.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 249.
-Package rerunfilecheck Info: File `Stats_Report.out' has not changed.
-(rerunfilecheck)             Checksum: CE6917DDA9FFEB743599BB64B47B23AA;1153.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 290.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 290.
+
+
+Package rerunfilecheck Warning: File `Stats_Report.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+Package rerunfilecheck Info: Checksums for `Stats_Report.out':
+(rerunfilecheck)             Before: 35B052D6B17F1C33C2BEC918A3CFA8E0;1461
+(rerunfilecheck)             After:  4FE5F3BD466C4797332B841F46183D54;1557.
  ) 
 Here is how much of TeX's memory you used:
- 10061 strings out of 493921
- 141356 string characters out of 3144876
- 264007 words of memory out of 3000000
- 13100 multiletter control sequences out of 15000+200000
+ 10082 strings out of 493921
+ 141613 string characters out of 3144876
+ 263164 words of memory out of 3000000
+ 13110 multiletter control sequences out of 15000+200000
  16698 words of font info for 42 fonts, out of 3000000 for 9000
  841 hyphenation exceptions out of 8191
  33i,12n,43p,950b,1906s stack positions out of 5000i,500n,10000p,200000b,50000s
@@ -867,13 +881,16 @@ pData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\eccc1440.pk> <C:\User
 s\Simon\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\ecrm1440.pk
 > <C:\Users\Simon\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\e
 crm2074.pk><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cm
-mi6.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi8
-.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr12.pf
-b><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
-<C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/urw/courier/ucrr8a.pfb>
-Output written on Stats_Report.pdf (7 pages, 391865 bytes).
+mi12.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi
+6.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi8.p
+fb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr12.pfb>
+<C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/
+Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Pr
+ogram Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Progr
+am Files (x86)/MiKTeX 2.9/fonts/type1/urw/courier/ucrr8a.pfb>
+Output written on Stats_Report.pdf (10 pages, 521278 bytes).
 PDF statistics:
- 567 PDF objects out of 1000 (max. 8388607)
- 121 named destinations out of 1000 (max. 500000)
- 123 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 637 PDF objects out of 1000 (max. 8388607)
+ 131 named destinations out of 1000 (max. 500000)
+ 160 words of extra memory for PDF output out of 10000 (max. 10000000)
 

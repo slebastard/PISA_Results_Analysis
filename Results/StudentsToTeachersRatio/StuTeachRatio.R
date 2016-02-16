@@ -43,22 +43,6 @@ Discrete_ST_M12 <- discretize2d(STM$"S/T ratio", STM$"PISA Maths Score", numBins
 Discrete_ST_R8 <- discretize2d(STR$"S/T ratio", STR$"PISA Reading Score", numBins1=8, numBins2=8)
 Discrete_ST_R12 <- discretize2d(STR$"S/T ratio", STR$"PISA Reading Score", numBins1=12, numBins2=12)
 
-STPISAM_miM8 <- mi.plugin(Discrete_ST_M8)
-STPISAM_entrM8 <- entropy(Discrete_ST_M8)
-STDependencyM8 <- (STPISAM_miM8)/(STPISAM_entrM8)
-
-STPISAM_miM12 <- mi.plugin(Discrete_ST_M12)
-STPISAM_entrM12 <- entropy(Discrete_ST_M12)
-STDependencyM12 <- (STPISAM_miM12)/(STPISAM_entrM12)
-
-STPISAM_miR8 <- mi.plugin(Discrete_ST_R8)
-STPISAM_entrR8 <- entropy(Discrete_ST_R8)
-STDependencyR8 <- (STPISAM_miR8)/(STPISAM_entrR8)
-
-STPISAM_miR12 <- mi.plugin(Discrete_ST_R12)
-STPISAM_entrR12 <- entropy(Discrete_ST_R12)
-STDependencyR12 <- (STPISAM_miR12)/(STPISAM_entrR12)
-
 STFisherM8 <- fisher.test(Discrete_ST_M8)
 	# Fisher's Exact Test for Count Data
 	# data:  Discrete_ST_M8

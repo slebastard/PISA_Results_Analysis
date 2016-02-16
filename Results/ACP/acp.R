@@ -12,15 +12,15 @@ setwd("D:/Ponts/2A/S4/Statistiques/Projet/Data")
 PISAMFile <- "PISA_Maths.csv"
 PISAM <- read.csv(PISAMFile)
 colnames(PISAM) <- c("CTR", "INDICATOR", "SUBJECT", "MEASURE", "FREQUENCY", "TIME", "Value", "Flag.Codes")
-PISAMFilt <- sqldf("select CTR, Value from PISAM where SUBJECT=='GIRL' and TIME=='2012'")
-head(PISAMFilt)
+PISAM12 <- sqldf("select CTR, Value from PISAM where SUBJECT=='GIRL' and TIME=='2012'")
+head(PISAM12)
 
 ## LOADING AND FILTERING PISA SCIENCES DB ##
-PISASFile <- "PISA_Sciences.csv"
-PISAS <- read.csv(PISASFile)
-colnames(PISAS) <- c("CTR", "INDICATOR", "SUBJECT", "MEASURE", "FREQUENCY", "TIME", "Value", "Flag.Codes")
-PISASFilt <- sqldf("select CTR, Value from PISAS where SUBJECT=='GIRL' and TIME=='2012'")
-head(PISASFilt)
+PISARFile <- "PISA_Reading.csv"
+PISAR <- read.csv(PISARFile)
+colnames(PISAR) <- c("CTR", "INDICATOR", "SUBJECT", "MEASURE", "FREQUENCY", "TIME", "Value", "Flag.Codes")
+PISAR12 <- sqldf("select CTR, Value from PISAS where SUBJECT=='GIRL' and TIME=='2012'")
+head(PISAR12)
 
 #								  #
 ### LOADING ALL FILES AND CREATING THE DATASETS ###
@@ -70,7 +70,7 @@ Spendings3 <- sqldf("select CTR, Value from Spend where SUBJECT=='TRY'")
 ###### COMPLETE DATATABLE #####
 #					#
 
-tmp1 <- merge(Diplo2012,PISAMFilt,by = "CTR")
+tmp1 <- merge(Diplo2012,PISAM12,by = "CTR")
 tmp1 <- na.omit(tmp1)								# 36 entries
 tmp2 <- merge(STRatio,tmp1,by = "CTR")
 tmp2 <- na.omit(tmp2)								# 30 entries
@@ -85,22 +85,22 @@ tmp5 <- merge(Spendings1_2,tmp4,by = "CTR")
 PISAM12 <- na.omit(tmp5)							# 26 entries
 colnames(PISAM12) <- c("CTR", "Spendings on education, B USD", "Teaching time, h", "Teachers salaries, USD", "Student to teaching staff ratio", "Rate of tertiary diplomas","PISA Maths Value")			# 22 entries
 
-tmp1 <- merge(Diplo2012,PISASFilt,by = "CTR")
+tmp1 <- merge(Diplo2012,PISAR12,by = "CTR")
 tmp1 <- na.omit(tmp1)								# 36 entries
 tmp2 <- merge(STRatio,tmp1,by = "CTR")
 tmp2 <- na.omit(tmp2)								# 30 entries
-colnames(tmp2) <- c("CTR", "tmp 2", "tmp 1", "PISA Sciences Value")
+colnames(tmp2) <- c("CTR", "tmp 2", "tmp 1", "PISA Reading Value")
 tmp3 <- merge(Slr2012,tmp2,by = "CTR")	
 tmp3 <- na.omit(tmp3)
-colnames(tmp3) <- c("CTR", "tmp3", "tmp 2", "tmp 1", "PISA Sciences Value")
+colnames(tmp3) <- c("CTR", "tmp3", "tmp 2", "tmp 1", "PISA Reading Value")
 tmp4 <- merge(HoursUp,tmp3,by = "CTR")
 tmp4 <- na.omit(tmp4)
-colnames(tmp4) <- c("CTR", "tmp4", "tmp3", "tmp 2", "tmp 1", "PISA Sciences Value")
+colnames(tmp4) <- c("CTR", "tmp4", "tmp3", "tmp 2", "tmp 1", "PISA Reading Value")
 tmp5 <- merge(Spendings1_2,tmp4,by = "CTR")
 PISAS12 <- na.omit(tmp5)							# 26 entries
-colnames(PISAS12) <- c("CTR", "Spendings on education, B USD", "Teaching time, h", "Teachers salaries, USD", "Student to teaching staff ratio", "Rate of tertiary diplomas","PISA Sciences Value")			# 22 entries
+colnames(PISAS12) <- c("CTR", "Spendings on education, B USD", "Teaching time, h", "Teachers salaries, USD", "Student to teaching staff ratio", "Rate of tertiary diplomas","PISA Reading Value")			# 22 entries
 
-## Principal Components Analysis ##
+## Principal Components Analysis for mathematics results ##
 
 # Distinguish quantitative from qualitative factors #
 quant = PISAM12[,2:7]
@@ -156,10 +156,18 @@ print(loadings)
 ## Multiple linear regression ##
 #					 #
 
+# Results in mathematics #
+
 MultiRegMaths <- lm(PISAM12$"PISA Maths Value" ~ PISAM12$"Spendings on education, B USD" + PISAM12$"Teaching time, h" + PISAM12$"Teachers salaries, USD" + PISAM12$"Student to teaching staff ratio")
 summary(MultiRegMaths)
 
 MultiRegMaths2 <- lm(PISAM12$"PISA Maths Value" ~ PISAM12$"Teaching time, h" + PISAM12$"Student to teaching staff ratio")
 summary(MultiRegMaths2)
 
-anova(MultiRegMaths, MultiRegMaths2) 
+anova(MultiRegMaths, MultiRegMaths2)
+
+# Results in reading #
+
+MultiRegReading <- lm(PISAR12$"PISA Reading Value" ~ PISAR12$"Spendings on education, B USD" + PISAR12$"Teaching time, h" + PISAR12$"Teachers salaries, USD" + PISAR12$"Student to teaching staff ratio")
+summary(MultiRegReading)
+

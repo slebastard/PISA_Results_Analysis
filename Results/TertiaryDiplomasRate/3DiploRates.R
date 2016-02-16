@@ -12,11 +12,11 @@ PISAMFilt <- sqldf("select CTR, Value from PISAM where SUBJECT=='GIRL' and TIME=
 head(PISAMFilt)
 
 ## LOADING AND FILTERING PISA SCIENCES DB ##
-PISASFile <- "PISA_Sciences.csv"
-PISAS <- read.csv(PISASFile)
-colnames(PISAS) <- c("CTR", "INDICATOR", "SUBJECT", "MEASURE", "FREQUENCY", "TIME", "Value", "Flag.Codes")
-PISASFilt <- sqldf("select CTR, Value from PISAS where SUBJECT=='GIRL' and TIME=='2012'")
-head(PISASFilt)
+PISARFile <- "PISA_Reading.csv"
+PISAR <- read.csv(PISARFile)
+colnames(PISAR) <- c("CTR", "INDICATOR", "SUBJECT", "MEASURE", "FREQUENCY", "TIME", "Value", "Flag.Codes")
+PISARFilt <- sqldf("select CTR, Value from PISAR where SUBJECT=='GIRL' and TIME=='2012'")
+head(PISARFilt)
 
 ## LOADING DIPLOMAS RATES FILES ##
 DiploFile <- "ThirdGrade_Edu_Rate.csv"
@@ -43,11 +43,11 @@ summary(Diplo2012PISAM)
 
 # Creating and ploting the Diplomas Rate linked to Sciences PISA Scores dataframe #
 
-Diplo2012PISAS <- merge(Diplo2012,PISASFilt,by = "CTR")			# 36 entries
-Diplo2012PISAS <- na.omit(Diplo2012PISAS)						# 36 entries
-colnames(Diplo2012PISAS) <- c("CTR", "Tertiary diplomas rate", "PISA Sciences Score")
-plot(Diplo2012PISAS$"PISA Sciences Score", Diplo2012PISAS$"Tertiary diplomas rate")		# That also looks promising!
-summary(Diplo2012PISAS)
+Diplo2012PISAR <- merge(Diplo2012,PISARFilt,by = "CTR")			# 36 entries
+Diplo2012PISAR <- na.omit(Diplo2012PISAR)						# 36 entries
+colnames(Diplo2012PISAR) <- c("CTR", "Tertiary diplomas rate", "PISA Reading Score")
+plot(Diplo2012PISAR$"PISA Reading Score", Diplo2012PISAR$"Tertiary diplomas rate")		# That also looks promising!
+summary(Diplo2012PISAR)
 	# CTR     Tertiary diplomas rate PISA Sciences Score
  	# AUS    : 1   Min.   :14.51          Min.   :403.9      
  	# AUT    : 1   1st Qu.:30.06          1st Qu.:488.9      
@@ -60,7 +60,7 @@ summary(Diplo2012PISAS)
 # Creating discrete dataframes #
 
 Discrete_Diplo_M9 <- discretize2d(Diplo2012PISAM$"PISA Maths Score", Diplo2012PISAM$"Tertiary diplomas rate", numBins1=8, numBins2=8)
-Discrete_Diplo_S9 <- discretize2d(Diplo2012PISAS$"PISA Sciences Score", Diplo2012PISAS$"Tertiary diplomas rate", numBins1=8, numBins2=8)
+Discrete_Diplo_R9 <- discretize2d(Diplo2012PISAR$"PISA Reading Score", Diplo2012PISAR$"Tertiary diplomas rate", numBins1=8, numBins2=8)
 
 # Fisher Testing #
 
@@ -69,7 +69,7 @@ DiploFisherM9 <- fisher.test(Discrete_Diplo_M9)
 	# data:  Discrete_Diplo_M9
 	# p-value = 0.5232
 	# alternative hypothesis: two.sided
-DiploFisherS9 <- fisher.test(Discrete_Diplo_S9)
+DiploFisherR9 <- fisher.test(Discrete_Diplo_R9)
 	# Fisher's Exact Test for Count Data
 	# data:  Discrete_Diplo_S9
 	# p-value = 0.6613

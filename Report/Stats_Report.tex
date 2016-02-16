@@ -234,9 +234,22 @@ At last here is the plot of PISA results as a function of $\frac{N_{students}}{N
 
 \begin{figure}
 	\centering
+	\label{STRatio}
 	\caption{Influence of the student/Teacher ratio on the results at PISA}
 	\includegraphics[scale=0.4]{img/STRatio.png}
 \end{figure}
+
+\subsection{Amount of available data}
+
+The most limitating factor in this study is the small number of entries. As data emanates from different databases, some data are given for every year from 2000 to 2012, others only are available for 2012...
+What the authors did when possible is that they've used data from several years in order to have more entries. As there only is PISA data for the years 2006, 2009 and 2012, this process is possible for a factor if there is data for at least two of those years for this same factor.
+This was namely the case for the \textit{teaching hours} factor.
+
+Of course one of the critics that can be addressed to the authors is that they treated data from 2006 the same way they treated data from 2012, despite knowing that they cannot know how trends have evolved between 2006 and 2012. As we only study a few factors, and as the results of this study points out, the factors that the authors studied do not completely represent the results at PISA, which means that there is a mechanism that the authors failed to find. By treating data from 2006 and 2012 the same way, the authors made the hypothesis that:
+\begin{itemize}
+	\item some countries give significantly different results three years apart
+	\item there is no hidden or ignored variable that could influence the PISA results and significantly vary in three years
+\end{itemize}
 
 \subsection{Strategy of analysis}
 
@@ -245,5 +258,33 @@ The study is divided in two parts:
 	\item The study of the dependence of each academic factor to PISA results, both in mathematics and in reading. As presented just before and because of the small number of entries in the data frames, the exact Fisher Test was used. Therefore the scripts for different academic factors are very similar, which is why only one of the scripts is presented in this paper.
 	\item A principal component analysis that aims at explaining the results at PISA in mathematics and reading, in order to know what factor significantly influences the results relatively to one another
 \end{enumerate}
+
+\section{Results}
+
+\subsection{Student / Teachers ratio}
+
+No data was found for the years 2009 or 2006. Therefore there were only 32 entries available for this test, which were those of year 2012.
+For a number of bins of 8, the results show that \textbf{the $\frac{N_{students}}{N_{teachers}}$ is correlated to the results in science at PISA for 5\% and 3\% uncertainty index} (Fisher test, p\_value = $2.672*10^{-2}$). As the results at PISA in mathematics and science are slightly different, it is not necessarily surprising to find that the $\frac{N_{students}}{N_{teachers}}$ is not correlated to the results in maths (the p\_value is quite low though, p\_value = $9.152*10^{-2}$).
+
+No correlation between the previous ratio and the results at the reading test was found.
+
+For a graphic representation of the results at PISA as a function of $\frac{N_{students}}{N_{teachers}}$, refer to \ref{STRatio}.
+
+\subsection{Are PISA results representative of the tertiary diplomas rate? }
+
+The previous analysis was led by presuming that results at PISA would reveal a tendency. The authors have decided to sum up the academic performance of a country not by its results at PISA tests, but by the rate of tertiary diplomas in this country. As a matter of fact, PISA tests are often criticised for not being able to judge the performance of education because of the strong cultural and contextual discrepancies in the collection of countries that take part to the tests.
+
+This sections aims at asserting if the two variables - results at PISA in one of the fields, and the rate of people with a tertiary diploma (bachelor, master of PhD) - are linked whatsoever.
+
+\begin{figure}
+	\centering
+	\label{3DRate}
+	\caption{Tertiary diploma rate as a function of results at PISA. The reader will notice the trend that is represented here: overall better results at PISA lead to a greater rate of people with a tertiary diplomas}
+	\includegraphics[scale=0.4]{img/3DRate.png}
+\end{figure}
+
+\section{Conclusion}
+
+\section{Bibliography}
 
 \end{document}
