@@ -146,3 +146,26 @@ plot(STM$"S/T ratio", STM$"PISA Maths Score")
 # Plot of PISAScience = f(S/T) #
 plot(STS$"S/T ratio", STS$"PISA Sciences Score")
 
+#						#
+####### MULTILINEAR ANALYSIS ########
+#						#
+
+# Create a database that regroup every previous table #
+
+tmp1 <- merge(InnIndeWorkMath4,PISAMFilt,by = "CTR")			
+colnames(tmp1) <- c("CTR", "Indep Work % 4th", "PISA Maths Score")
+tmp2 <- merge(InnIndeWorkMath8,tmp1,by = "CTR")			
+colnames(tmp2) <- c("CTR", "Indep Work % 8th", "Indep Work % 4th", "PISA Maths Score")
+tmp3 <- merge(InnExplainMath8,tmp2,by = "CTR")				
+colnames(tmp3) <- c("CTR", "Valor Explanations % 8th", "Indep Work % 8th", "Indep Work % 4th", "PISA Maths Score")
+tmp4 <- merge(InnGroupWorkMath8,tmp3,by = "CTR")			
+colnames(tmp4) <- c("CTR", "Group Work % 8th", "Valor Explanations % 8th", "Indep Work % 8th", "Indep Work % 4th", "PISA Maths Score")
+tmp5 <- merge(InnIndeSolvingMath8,tmp4,by = "CTR")		
+colnames(tmp5) <- c("CTR", "Indep Solving Method % 8th", "Group Work % 8th", "Valor Explanations % 8th", "Indep Work % 8th", "Indep Work % 4th", "PISA Maths Score")
+AllInnoMath <- merge(InnAbilityGroups,tmp5,by = "CTR")			
+colnames(AllInnoMath) <- c("CTR", "By group lvl %", "Indep Solving Method % 8th", "Group Work % 8th", "Valor Explanations % 8th", "Indep Work % 8th", "Indep Work % 4th", "PISA Maths Score")
+
+# Running the linear regression #
+
+MultiRegMaths <- lm(AllInnoMath$"PISA Maths Score" ~ AllInnoMath$"By group lvl %" + AllInnoMath$"Indep Solving Method % 8th" + AllInnoMath$"Group Work % 8th" + AllInnoMath$"Valor Explanations % 8th" + AllInnoMath$"Indep Work % 8th" + AllInnoMath$"Indep Work % 4th")
+summary(MultiRegMaths)

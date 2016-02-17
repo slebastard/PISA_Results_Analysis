@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9) (preloaded format=pdflatex 2015.4.17)  16 FEB 2016 12:51
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9) (preloaded format=pdflatex 2015.4.17)  17 FEB 2016 20:18
 entering extended mode
 **Stats_Report.tex
 (D:\Ponts\2A\S4\Statistiques\Projet\Report\Stats_Report.tex
@@ -699,7 +699,11 @@ Package csquotes Info: ... found 'babel' package.
 Package csquotes Info: Adjusting default style.
 Package csquotes Info: Redefining alias 'default' -> 'english'.
 
-(D:\Ponts\2A\S4\Statistiques\Projet\Report\Stats_Report.aux)
+(D:\Ponts\2A\S4\Statistiques\Projet\Report\Stats_Report.aux
+
+LaTeX Warning: Label `STRatio' multiply defined.
+
+)
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 20.
 LaTeX Font Info:    ... okay on input line 20.
 LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 20.
@@ -714,8 +718,7 @@ LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 20.
 LaTeX Font Info:    ... okay on input line 20.
 LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 20.
 LaTeX Font Info:    Try loading font information for TS1+cmr on input line 20.
-
-("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\base\ts1cmr.fd"
+ ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\base\ts1cmr.fd"
 File: ts1cmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    ... okay on input line 20.
@@ -816,7 +819,7 @@ File: t1pcr.fd 2001/06/04 font definitions for T1/pcr.
 LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <5> on input line 105.
  [3]
-<img/IntraDependencePISA.png, id=118, 407.5225pt x 1130.2225pt>
+<img/IntraDependencePISA.png, id=130, 407.5225pt x 1130.2225pt>
 File: img/IntraDependencePISA.png Graphic file (type png)
 
 <use img/IntraDependencePISA.png>
@@ -829,27 +832,84 @@ LaTeX Font Info:    Try loading font information for TS1+pcr on input line 167.
 ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\psnfss\ts1pcr.fd"
 File: ts1pcr.fd 2001/06/04 font definitions for TS1/pcr.
 ) [5]
-<img/STRatio.png, id=176, 393.47pt x 805.0075pt>
+<img/STRatio.png, id=188, 393.47pt x 805.0075pt>
 File: img/STRatio.png Graphic file (type png)
  <use img/STRatio.png>
 Package pdftex.def Info: img/STRatio.png used on input line 239.
 (pdftex.def)             Requested size: 157.38521pt x 321.9973pt.
  [6]
 [7 <D:/Ponts/2A/S4/Statistiques/Projet/Report/img/STRatio.png>]
-<img/3DRate.png, id=225, 397.485pt x 807.015pt>
+<img/TeachingHours.png, id=237, 894.34125pt x 763.85374pt>
+File: img/TeachingHours.png Graphic file (type png)
+
+<use img/TeachingHours.png>
+Package pdftex.def Info: img/TeachingHours.png used on input line 294.
+(pdftex.def)             Requested size: 357.73016pt x 305.53607pt.
+
+<img/Innovation.png, id=238, 893.3375pt x 835.12pt>
+File: img/Innovation.png Graphic file (type png)
+ <use img/Innovation.png>
+Package pdftex.def Info: img/Innovation.png used on input line 305.
+(pdftex.def)             Requested size: 357.32866pt x 334.04207pt.
+
+[8] [9 <D:/Ponts/2A/S4/Statistiques/Projet/Report/img/TeachingHours.png>]
+[10 <D:/Ponts/2A/S4/Statistiques/Projet/Report/img/Innovation.png>]
+Overfull \hbox (18.08199pt too wide) in paragraph at lines 316--317
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][
+][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
+[][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (186.0837pt too wide) in paragraph at lines 318--319
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][
+][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][
+][][][][][][] 
+ []
+
+
+Overfull \hbox (306.08492pt too wide) in paragraph at lines 320--321
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][
+][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][
+][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
+ 
+ []
+
+
+Overfull \hbox (486.08675pt too wide) in paragraph at lines 322--323
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][
+][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][
+][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (636.08827pt too wide) in paragraph at lines 324--325
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][
+][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][
+][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][
+][][][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+<img/3DRate.png, id=264, 397.485pt x 807.015pt>
 File: img/3DRate.png Graphic file (type png)
  <use img/3DRate.png>
-Package pdftex.def Info: img/3DRate.png used on input line 283.
+Package pdftex.def Info: img/3DRate.png used on input line 354.
 (pdftex.def)             Requested size: 158.99118pt x 322.80028pt.
- [8]
-[9 <D:/Ponts/2A/S4/Statistiques/Projet/Report/img/3DRate.png>]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 290.
- [10]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 290.
+ [11]
+[12 <D:/Ponts/2A/S4/Statistiques/Projet/Report/img/3DRate.png>]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 361.
+ [13]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 361.
 
 (D:\Ponts\2A\S4\Statistiques\Projet\Report\Stats_Report.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 290.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 290.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 361.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 361.
 
 
 Package rerunfilecheck Warning: File `Stats_Report.out' has changed.
@@ -857,14 +917,17 @@ Package rerunfilecheck Warning: File `Stats_Report.out' has changed.
 (rerunfilecheck)                or use package `bookmark'.
 
 Package rerunfilecheck Info: Checksums for `Stats_Report.out':
-(rerunfilecheck)             Before: 35B052D6B17F1C33C2BEC918A3CFA8E0;1461
-(rerunfilecheck)             After:  4FE5F3BD466C4797332B841F46183D54;1557.
+(rerunfilecheck)             Before: 795336AAE75BFB1913571920AD0565FB;1622
+(rerunfilecheck)             After:  558C4950ECFE05C6B61948E8355228A7;1703.
+
+LaTeX Warning: There were multiply-defined labels.
+
  ) 
 Here is how much of TeX's memory you used:
- 10082 strings out of 493921
- 141613 string characters out of 3144876
- 263164 words of memory out of 3000000
- 13110 multiletter control sequences out of 15000+200000
+ 10208 strings out of 493921
+ 143326 string characters out of 3144876
+ 279404 words of memory out of 3000000
+ 13192 multiletter control sequences out of 15000+200000
  16698 words of font info for 42 fonts, out of 3000000 for 9000
  841 hyphenation exceptions out of 8191
  33i,12n,43p,950b,1906s stack positions out of 5000i,500n,10000p,200000b,50000s
@@ -888,9 +951,9 @@ fb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr12.pfb>
 Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Pr
 ogram Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Progr
 am Files (x86)/MiKTeX 2.9/fonts/type1/urw/courier/ucrr8a.pfb>
-Output written on Stats_Report.pdf (10 pages, 521278 bytes).
+Output written on Stats_Report.pdf (13 pages, 838367 bytes).
 PDF statistics:
- 637 PDF objects out of 1000 (max. 8388607)
- 131 named destinations out of 1000 (max. 500000)
- 160 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 709 PDF objects out of 1000 (max. 8388607)
+ 173 named destinations out of 1000 (max. 500000)
+ 194 words of extra memory for PDF output out of 10000 (max. 10000000)
 

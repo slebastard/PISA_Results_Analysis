@@ -270,6 +270,77 @@ No correlation between the previous ratio and the results at the reading test wa
 
 For a graphic representation of the results at PISA as a function of $\frac{N_{students}}{N_{teachers}}$, refer to \ref{STRatio}.
 
+\subsection{Teaching hours}
+
+One of the advantages of the "Teaching hours in academy" database is that data was available not only for the year 2012, but also for the years 2009 and 2006. Therefore there were three time more data than there would be with a single year.
+To combine the data from different years, the names of the countries were artificially modified to include a key that represents the year of the data. Then, the $rbind$ command was used as following:
+\begin{lstlisting}
+HoursMUpTMP <- rbind(HoursMUp12,HoursMUp09)
+HoursMUpAll <- rbind(HoursMUpTMP,HoursMUp06)
+plot(HoursMUpAll$"Teaching Hours Upper Sec", HoursMUpAll$"PISA Maths Score")
+
+HoursMLowTMP <- rbind(HoursMLow12,HoursMLow09)
+HoursMLowAll <- rbind(HoursMLowTMP,HoursMLow06)
+plot(HoursMLowAll$"Teaching Hours Lower Sec", HoursMLowAll$"PISA Maths Score")
+\end{lstlisting}
+where $HoursMUpAll$ represents a dataframe with the teaching hours in the upper secondary sector, for all three years, and $HoursMLowAll$ represents the corresponding data frame for lower secondary.
+For this database, there was a major issue though: no matter how the bin number was chosen, a chi-squared test would almost always fail because of the high zeros representation in the dataframe's frequencies.
+Only with a number of bins equal to six could we launch the chi-squared test. The tests then gave very low p-values, but that might be because the function was altered so much.
+
+\begin{figure}
+	\centering
+	\label{STRatio}
+	\caption{Influence of the teaching time (hours/year) on the results at PISA. It seems like those two variables are quite independent, which was confirmed by the chi-squared tests. Note that the chi-squared tests may not be reliable because of the low number of bins that was taken, because of the high number of zero frequencies in the data frame}
+	\includegraphics[scale=0.4]{img/TeachingHours.png}
+\end{figure}
+
+\subsection{Innovation in teaching methods}
+
+This analysis may have been the greatest disappointment of the study: though the authors expected to see some correlation between some factors, it turned out that a dependency between innovation in teaching and the results at PISA is hard to find.
+
+\begin{figure}
+	\centering
+	\label{Innovation}
+	\caption{The plot of the results at PISA in mathematics as a function of an indicator of innovation in education. There clearly is not enough data for us to judge whether there is or not correlation, but those plots suggest that there is not much}
+	\includegraphics[scale=0.4]{img/Innovation.png}
+\end{figure}
+
+One of the reasons might be that the authors severely lacked data in the OECD database: for some innovation factors, there were only 11 entries!
+Another reason might be that those indicators give information about something that is to subtle to make a difference in itself. Finally we could think that those innovations in the classrooms might take years before they give any good results.
+
+Before the authors give up on those criterion, they chose to run a multiple linear regression on the data. To do so, the different dataframes were merged into one as following:
+\begin{lstlisting}
+tmp1 <- merge(InnIndeWorkMath4,PISAMFilt,by = "CTR")			
+colnames(tmp1) <- c("CTR", "Indep Work % 4th", "PISA Maths Score")
+tmp2 <- merge(InnIndeWorkMath8,tmp1,by = "CTR")			
+colnames(tmp2) <- c("CTR", "Indep Work % 8th", "Indep Work % 4th", "PISA Maths Score")
+tmp3 <- merge(InnExplainMath8,tmp2,by = "CTR")				
+colnames(tmp3) <- c("CTR", "Valor Explanations % 8th", "Indep Work % 8th", "Indep Work % 4th", "PISA Maths Score")
+tmp4 <- merge(InnGroupWorkMath8,tmp3,by = "CTR")			
+colnames(tmp4) <- c("CTR", "Group Work % 8th", "Valor Explanations % 8th", "Indep Work % 8th", "Indep Work % 4th", "PISA Maths Score")
+tmp5 <- merge(InnIndeSolvingMath8,tmp4,by = "CTR")		
+colnames(tmp5) <- c("CTR", "Indep Solving Method % 8th", "Group Work % 8th", "Valor Explanations % 8th", "Indep Work % 8th", "Indep Work % 4th", "PISA Maths Score")
+AllInnoMath <- merge(InnAbilityGroups,tmp5,by = "CTR")			
+colnames(AllInnoMath) <- c("CTR", "By group lvl %", "Indep Solving Method % 8th", "Group Work % 8th", "Valor Explanations % 8th", "Indep Work % 8th", "Indep Work % 4th", "PISA Maths Score")
+\end{lstlisting}
+We can see that only eight entries are common to all dataframes (for the different innovation indicators).
+Of course the multiple regression indicates standard errors of the same order as the estimates themselves, which reflects the small amount of entries.
+\begin{lstlisting}
+Coefficients:
+Estimate Std. Error t value Pr(>|t|)
+(Intercept)                              850.5353   198.8682   4.277    0.146
+AllInnoMath$"By group lvl %"              -1.2280     0.8787  -1.398    0.395
+AllInnoMath$"Indep Solving Method % 8th"  -4.2854     3.3420  -1.282    0.422
+AllInnoMath$"Group Work % 8th"             0.2387     0.6910   0.345    0.788
+AllInnoMath$"Valor Explanations % 8th"    -0.3169     0.6156  -0.515    0.697
+AllInnoMath$"Indep Work % 8th"            -3.2802     2.4784  -1.324    0.412
+AllInnoMath$"Indep Work % 4th"            -0.4075     1.2944  -0.315    0.806
+
+Residual standard error: 10.45 on 1 degrees of freedom
+Multiple R-squared:  0.9502,    Adjusted R-squared:  0.6516 
+F-statistic: 3.182 on 6 and 1 DF,  p-value: 0.4046
+\end{lstlisting}
+
 \subsection{Are PISA results representative of the tertiary diplomas rate? }
 
 The previous analysis was led by presuming that results at PISA would reveal a tendency. The authors have decided to sum up the academic performance of a country not by its results at PISA tests, but by the rate of tertiary diplomas in this country. As a matter of fact, PISA tests are often criticised for not being able to judge the performance of education because of the strong cultural and contextual discrepancies in the collection of countries that take part to the tests.

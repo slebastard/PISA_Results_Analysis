@@ -142,6 +142,12 @@ STChiRUp8 <- chisq.test(Discrete_TH_RUp8)
 STChiMLow8 <- chisq.test(Discrete_TH_MLow8)
 STChiRLow8 <- chisq.test(Discrete_TH_RLow8)
 
+STFisherMUp8 <- fisher.test(Discrete_TH_MUp8)
+STFisherRUp8 <- fisher.test(Discrete_TH_RUp8)
+
+STFisherMLow8 <- fisher.test(Discrete_TH_MLow8)
+STFisherRLow8 <- fisher.test(Discrete_TH_RLow8)
+
 # Plot of PISAMaths = f(S/T) #
 plot(HoursMUp12$"Teaching Hours", HoursMUp12$"PISA Maths Score")
 
