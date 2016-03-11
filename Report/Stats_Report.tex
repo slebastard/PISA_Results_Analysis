@@ -10,6 +10,7 @@
 \usepackage[section]{placeins}
 \usepackage[parfill]{parskip}
 \usepackage{fancyhdr}
+\usepackage{booktabs}
 \setlength{\headheight}{15.2pt}
 \pagestyle{fancy}
 \lhead{}
@@ -61,6 +62,10 @@ One of the arguments to the uneffectivemess of teaching in many secondary instit
 
 The students to teachers ratio does not measure this density, but reflects the way students are framed during their learning hours.
 
+\subsubsection{Educational expenditures}
+
+It felt important to us to check the importance of the financial means given to the educational system. Is having a higher budget really important for the performances of the students? Or is there some other, more important criteria? It thus felt natural to check the extent of the budget effect. 
+
 \subsubsection{Teachers salaries}
 
 This is a key factor, as teaching salaries settle the attractiveness of the job, and thus the competition among teachers. At a given level of demand in teachers, high salaries will lead to better selection among teachers. One could then expect better paid teachers to be more skilled. This study will try to assess whether this is true or not, and if it is. Well, not really, as what is measured is only the results of the students at standard tests, and it is obvious that a skilled mathematician may not be a good teacher. There are two things that will be measured regardless of one another: the skills of the teachers, and the way teachers are selected.
@@ -82,7 +87,7 @@ For us, it felt natural that teaching hours and a good mark at the PISA were lin
 The PISA (« Program for International Student Assessment ») is a worldwide study by the OECD. It evaluates the performances of students through an exam. This exam is common for every country taking part in it. The authors used it as reference in their study, as it is the only test that can be used to compare the students of different countries. However they understand that it is a flawed test, and that the results may be attacked on that point. Indeed, how could good results prove the skills and knowledge of the students? Even if we could measure it, should skills and knowledge learned be the key to evaluate an educative system? Is the skills and the « savoir-faire » all that matters? All those questions won’t be tackled in this report, and we will use the PISA as it is our only common indicator for education in the whole OECD. It is the only way to compare the different countries and students.
 \\
 However, before checking how important the other criteria are, it is important to check the validity of the PISA as our comparison main criteria.
-
+\\
 To do so, the authors tried to check whether the results of the PISA and the part of the people with a diploma was in anyway linked. Indeed, it is interesting to check if a goof score at the PISA tests allow a country to have more graduates or not.
 
 \subsubsection{Details}
@@ -270,6 +275,10 @@ No correlation between the previous ratio and the results at the reading test wa
 
 For a graphic representation of the results at PISA as a function of $\frac{N_{students}}{N_{teachers}}$, refer to \ref{STRatio}.
 
+\subsection{Teachers’ salaries}
+
+There were only data for the year 2012 for the Teachers’ salaries in USD. We thus had the same issue than for the Student/Teacher Ratio (see part 4.1). We found a correlation between the Teachers’ salaries and the result in the Mathematics section of the PISA for a number of bin of 10 and for 5 \% and 3 \% uncertainty (with a p-value of $2.67*10^{-2}$). We also found a correlation with the results in the Reading and Science section of the PISA for a 5\% and 3\% uncertainty (with a p-value of $2.59*10^{-2}$)
+
 \subsection{Teaching hours}
 
 One of the advantages of the "Teaching hours in academy" database is that data was available not only for the year 2012, but also for the years 2009 and 2006. Therefore there were three time more data than there would be with a single year.
@@ -284,6 +293,9 @@ HoursMLowAll <- rbind(HoursMLowTMP,HoursMLow06)
 plot(HoursMLowAll$"Teaching Hours Lower Sec", HoursMLowAll$"PISA Maths Score")
 \end{lstlisting}
 where $HoursMUpAll$ represents a dataframe with the teaching hours in the upper secondary sector, for all three years, and $HoursMLowAll$ represents the corresponding data frame for lower secondary.
+\\
+It felt natural to us that teaching hours and good results at the PISA were linked. Indeed, one can easily think that the more class hour you have, the easier it is to understand and to have a fine mastership of the subject. We thus not only wanted to check if there was or not a dependency which truly existed, but also to know how important the link between those data was.
+\\
 For this database, there was a major issue though: no matter how the bin number was chosen, a chi-squared test would almost always fail because of the high zeros representation in the dataframe's frequencies.
 Only with a number of bins equal to six could we launch the chi-squared test. The tests then gave very low p-values, but that might be because the function was altered so much.
 
@@ -293,6 +305,10 @@ Only with a number of bins equal to six could we launch the chi-squared test. Th
 	\caption{Influence of the teaching time (hours/year) on the results at PISA. It seems like those two variables are quite independent, which was confirmed by the chi-squared tests. Note that the chi-squared tests may not be reliable because of the low number of bins that was taken, because of the high number of zero frequencies in the data frame}
 	\includegraphics[scale=0.4]{img/TeachingHours.png}
 \end{figure}
+
+\subsection{Educational expenditures}
+
+There were only data for the year 2012. We thus had the same issue than for the Student/Teacher Ratio (see part 4.1). We found no correlations between the Educational expenditure as a part of the GDP and the result of a country at the PISA test (indeed, the results of a Fisher test shows a p-value of $9.57*10^{-1}$ for the Mathematics section of the PISA and $8.24*10^{-1}$ for the Reading section of the PISA).
 
 \subsection{Innovation in teaching methods}
 
@@ -354,8 +370,124 @@ This sections aims at asserting if the two variables - results at PISA in one of
 	\includegraphics[scale=0.4]{img/3DRate.png}
 \end{figure}
 
+\subsection{Principal component analysis}
+
+The $printcomp$ R function allowed us to see the correlation between he different variables. The following graphs were obtained:
+\begin{figure}
+	\centering
+	\label{printComp}
+	\caption{Cross-data for the different studied factors}
+	\includegraphics[scale=0.4]{img/correlations.png}
+\end{figure}
+
+After distinguishing the quantitative from the qualitative factors that could be correlated to the results at PISA, let us say in maths, we ran a Principal Component Analysis for the following factors, in this order:
+\begin{itemize}
+	\item Spending on education in billion USD
+	\item Teaching time in hours
+	\item Teaching time in hours
+	\item Teaching salaries in USD
+	\item Student to teaching staff ratio
+	\item Rate of tertiary diplomas
+\end{itemize}
+
+The importance of the different components were calculated and gave the different results:
+	
+	\begin{table}[h]
+		\centering
+		$\begin{array} {*{7}{c}}
+			\toprule
+			Feature & Comp.1 & Comp.2 & Comp.3 & Comp.4 & Comp.5 & Comp.6 \\
+			\midrule
+			Standard~deviation& 1.4926975 & 1.4166800 & 0.9005918 &  0.76227419 & 0.49084269 & 0.36306706\\
+			Proportion~of~variance & 0.3713577 & 0.3344970 & 0.1351776 &  0.09684366 & 0.04015442 & 0.02196962\\
+			Cumulative~proportion & 0.3713577 & 0.7058547 & 0.8410323 &  0.93787596 & 0.97803038 & 1.00000000\\
+			\bottomrule
+		\end{array}$
+	\end{table}
+	
+Here we'll decide to keep only the four first principal components (which represent 93.8\% of the data)
+It seems legit to rule out the two last components.
+
+To try and see how the different factors can relate to those ne components, here is the loadings table:
+
+\begin{table}[h]
+	\centering
+	$\begin{array} {*{7}{c}}
+		\toprule
+		Criterion & Comp.1 & Comp.2 & Comp.3 & Comp.4 & Comp.5 & Comp.6 \\
+		\midrule
+		Spendings~on~education, B USD & 0 & -0.510 & 0.496 & 0.645 & 0 & 0.257 \\
+		Teaching~time,~h & -0.187 & -0.605 & -0.289 & & -0.675 & 0.237 \\
+		Teachers~salaries,~USD & 0.356 & -0.410 & -0.601 & -0.127 & 0.559 & 0.123 \\
+		Student~to~teaching~staff~ratio & -0.428 & -0.321 & 0.419 & -0.603 & 0.284 & 0.308 \\
+		Rate~of~tertiary~diplomas & 0.525 & -0.282 & 0.258 & -0.446 & -0.241 & -0.567 \\
+		\bottomrule
+		PISA~Maths~Value & 0.609 & 0.151 & 0.258 & 0 & 0.167 & 0.714 \\
+	\end{array}$
+\end{table}
+
+\subsection{Multiinear regression}
+
+A multilinear regression was led with the following factors:
+\begin{itemize}
+	\item Spendings on education
+	\item Teaching time
+	\item Teachers salaries
+	\item Student to teaching staff ratio
+\end{itemize}
+
+With those variables we tries to explain the results at PISA in maths:
+\begin{lstlisting}
+lm(formula = PISAM12$"PISA Maths Value" ~ PISAM12$"Spendings on education, B USD" + 
+PISAM12$"Teaching time, h" + PISAM12$"Teachers salaries, USD" + 
+PISAM12$"Student to teaching staff ratio")
+\end{lstlisting}
+The following results were obtained:
+\begin{table}[h]
+	\centering
+	$\begin{array} {*{5}{c}}
+		\toprule
+		Results & Estimate & Std. Error & t-value & $Pr(>|t|)$ \\
+		\midrule
+		(Intercept) & 5.703e+02 & 3.728e+01 & 15.299 & 2.26e-11 \\
+		PISAM12"Spendings~on~education,~B~USD" & 13.13 & 8.771 & 1.497 & 0.1528 \\
+		PISAM12"Teaching~time,~h" & -1.801e-01 & 7.170e-02 & -2.513 & 0.0224 \\
+		PISAM12"Teachers~salaries,~USD" & 4.753e-04 & 2.939e-04 & 1.617 & 0.1242 \\
+		PISAM12"Student~to~teaching ~staff~ratio" & -2.041e+00 & 1.353e+00 & -1.508 & 0.1499 \\
+		\bottomrule
+	\end{array}$
+\end{table}
+
+Residual standard error: 22.46 on 17 degrees of freedom
+Multiple R-squared:  0.5185,    Adjusted R-squared:  0.4052 
+F-statistic: 4.577 on 4 and 17 DF,  p-value: 0.01084
+\\
+We came to the conclusion that though teaching time and spendings on education show interesting correlation coefficients, they also show compellingly high standard errors, which means that those results cannot be trusted much. Moreover, those results contradict what was found earlier in the study of each criterion.
+
 \section{Conclusion}
 
+One of the major feature of this study will be the lack of data, even from the OECD database, to strongly confirmed the observed trends.
+The authors found that teachers salaries show a strong correlation with the results in PISA, let it be in maths, science or reading tests. We must admit that a further analysis is required to try and understand the reason. A theory would be that in countries with good teachers salaries, being a teacher is a confortable position, and a great deal of selection among the candidates to teachers position result in better education. Another theory would be that the link between teachers salaries and education is much deeper: maybe education is considered very differently depending on the country, and the role it plays in societies result in teachers behaving differently.
+\\
+On the other end it seems like some feature show no correlation to the results at PISA, namely teaching hours and educational expenditures. Those are trends, but again more data would help to develop more accurate tests that may change those trends.
+\\
+Again for the multilinear analysis the authors came to the conclusion that there were not enough data to confirm any trend, the standards error being way too high to obtain any solid-ground results.
+
 \section{Bibliography}
+
+All presented data was collected from the OECD databases:
+\url{https://data.oecd.org/}
+
+\begin{itemize}
+\item Fisher's exact test with R\\
+	\url{http://www.utstat.toronto.edu/~brunner/oldclass/312f12/lectures/312f12FisherWithR.pdf}\\
+	University of Toronto
+\item Chi-squared test of Independence\\
+	\url{http://www.r-tutor.com/elementary-statistics/goodness-fit/chi-squared-test-independence}\\
+	Chi \textsc{Yau}, for r-tutor.com
+\item A Handbook of Statistical Analyses Using R\\
+	\url{https://cran.r-project.org/web/packages/HSAUR/vignettes/Ch_principal_components_analysis.pdf}\\
+	Brian S \textsc{Everitt} \and Torsten \textsc{Hothorn}
+\end{itemize}
 
 \end{document}
